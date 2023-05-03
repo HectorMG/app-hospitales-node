@@ -30,18 +30,64 @@ const crearHospital = async (req, res = response) => {
     }
 }
 
-const actualizarHospital = (req, res = response) => {
-    res.status(200).json({
-        ok:true,
-        msg: "Actualizar hospitales"
-    })
+const actualizarHospital = async (req, res = response) => {
+
+    const id = req.params.id;
+    const datosActualziar = { usuario: req.uid, ...req.body};
+
+    try {
+        const hospital = await Hospital.findById(id);
+
+        if (!hospital) {
+            return res.status(404).json({
+                ok: false,
+                msg: "El hospital no se encuentra"
+            })
+        }
+
+        const hospitalNuevo = await Hospital.findByIdAndUpdate(id,datosActualziar,{new:true});
+
+        res.status(200).json({
+            ok:true,
+            hospital: hospitalNuevo
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: "Error del servidor"
+        })
+    }
 }
 
-const eliminarHospital = (req, res = response) => {
-    res.status(200).json({
-        ok:true,
-        msg: "Eliminar hospitales"
-    })
+const eliminarHospital = async (req, res = response) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const hospital = await Hospital.findById(id);
+
+        if (!hospital) {
+            return res.status(404).json({
+                ok: false,
+                msg: "El hospital no se encuentra"
+            })
+        }
+
+        const eliminado = await Hospital.findByIdAndDelete(id);
+
+        res.status(200).json({
+            ok:true,
+            msg: eliminado
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error del servidor"
+        })
+    }
 }
 
 module.exports = {
