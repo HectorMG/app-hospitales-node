@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('./database/config')
-
+const path = require('path');
 
 // Se crea servidor express
 const app = express();
@@ -13,6 +13,9 @@ app.use(express.json());
 
 // Configurar CORS
 app.use(cors());
+
+//Carpeta publica
+app.use(express.static('app/public'));
 
 // Conexión BD
 dbConnection();
