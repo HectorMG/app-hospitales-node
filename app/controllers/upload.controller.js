@@ -59,7 +59,7 @@ const cargarArchivo = (req, res = response) => {
         res.status(200).json({
             ok: true,
             msg: "Archivo subido",
-            nombre
+            nombreArchivo
         });
       });
 
