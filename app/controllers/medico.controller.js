@@ -15,6 +15,37 @@ const getMedicos = async (req, res = response) => {
     });
 }
 
+const getMedico =  async (req, res = response) => {
+    const id = req.params.id;
+
+    try {
+        
+        const medico = await Medico.findById(id);
+
+        if (!medico) {
+            return res.status(404).json({
+                ok: false,
+                msg: "El médico no se encuentra"
+            })
+        }
+
+        res.status(200).json({
+            ok:true,
+            medico
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            ok: false,
+            msg: "Error del servidor"
+        })
+        
+    }
+
+}
+
+
 const crearMedicos = async (req, res = response) => {
     
     const { hospital } = req.body;
@@ -122,5 +153,6 @@ module.exports = {
     getMedicos,
     crearMedicos,
     actualizarMedicos,
-    eliminarMedicos
+    eliminarMedicos,
+    getMedico
 }

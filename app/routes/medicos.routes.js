@@ -3,14 +3,19 @@
  */
 
 const { Router } = require('express');
-const { getMedicos, crearMedicos, actualizarMedicos, eliminarMedicos } = require('../controllers/medico.controller');
+const { getMedicos, crearMedicos, actualizarMedicos, eliminarMedicos, getMedico } = require('../controllers/medico.controller');
 const { validarJWT } = require('../middleware/auth');
 const { validarCampos } = require('../middleware/validar-campos');
 const { check } = require('express-validator');
 
 const router = Router();
 
-router.get('/', getMedicos);
+router.get('/', validarJWT, getMedicos);
+
+router.get('/:id', [
+    validarJWT
+], getMedico);
+
 
 router.post('/',[
     validarJWT,
