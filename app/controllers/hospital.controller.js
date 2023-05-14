@@ -5,8 +5,6 @@ const getHospitales =  async (req, res = response) => {
 
     const desde = Number(req.query.desde)  || 0;
 
-    console.log(desde);
-
     const [hospitales, total] = await Promise.all([
         Hospital.find()
                 .populate('usuario', 'nombre email')
