@@ -3,6 +3,7 @@ const { generarJWT } = require('../helpers/jwt')
 const { googleVerify } = require('../helpers/google-verify');
 const  bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuario.model');
+const { getMenu } = require('../helpers/menu');
 
 
 const login = async (req, res = response) => {
@@ -28,11 +29,13 @@ const login = async (req, res = response) => {
         }
 
         const token =  await generarJWT(usuario.id)
+        const menu = getMenu(usuario.rol);
 
         res.status(200).json({
             'ok': true,
             usuario,
-            token
+            token,
+            menu
         });
         
     } catch (error) {
@@ -73,11 +76,13 @@ const googleSignIn = async (req, res = response) => {
 
         const token =  await generarJWT(usuario.id)
 
+        const menu = getMenu(usuario.rol);
 
         res.status(200).json({
             'ok': true,
             usuario,
-            token
+            token,
+            menu
         });
         
     } catch (error) {
@@ -96,10 +101,13 @@ const reNewToken = async (req, res = response) =>{
 
     const usuario = await Usuario.findById(uid);
 
+    const menu = getMenu(usuario.rol);
+
     res.json({
         ok:true,
         usuario,
-        token
+        token,
+        menu
     });
 }
 
